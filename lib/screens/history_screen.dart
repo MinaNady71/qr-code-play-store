@@ -1,11 +1,6 @@
-import 'dart:ui';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qr_code/ads_package/ad_helper/ads_helper.dart';
 import 'package:qr_code/ads_package/ads_models/banner_ad_model.dart';
 import 'package:qr_code/component.dart';
 import 'package:qr_code/cubit/cubit.dart';
@@ -87,7 +82,6 @@ class HistoryScreen extends StatelessWidget {
 
                   }else{
                    defaultToastMessage(context: context,msg: 'Scanned is Empty', color: Color(0xff323739));
-                   AdsHelper.randomIndexForInterstitialAd();
                   }
                 }else if(cubit.historyIndex == 1){
                   if(cubit.createList.isNotEmpty){

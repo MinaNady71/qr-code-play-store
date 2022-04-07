@@ -29,6 +29,7 @@ class _ScanScreenState extends State<ScanScreen> {
   Barcode? result;
   bool toggleFlash = false;
   IconData flashIcon = Icons.flash_off;
+  double zoom = 40;
 @override
  
   void reassemble() {
@@ -64,6 +65,8 @@ class _ScanScreenState extends State<ScanScreen> {
         }
       },
       builder: (context,state){
+
+        var mq =MediaQuery.of(context).size.width * 0.5;
         return  Scaffold(
 
           floatingActionButton:SpeedDial(
@@ -110,7 +113,6 @@ class _ScanScreenState extends State<ScanScreen> {
                     cubit.downLoadImage(context).then((value){
                      _launchImageURL();
                     });
-                  print('minaaa' + ScanCodeCubit.get(context).scanResult.toString());
 
                   }
               ),
@@ -131,11 +133,29 @@ class _ScanScreenState extends State<ScanScreen> {
                               controller!.resumeCamera();
                             });
                           },
+                          onScaleUpdate: (d){
+                              setState(() {
+
+                                if(zoom <= 120 && zoom >= 0){
+                                  zoom = zoom -(d.rotation * 3) ;
+                                }else if(zoom.toInt() == 120){
+                                  zoom = 119;
+                                }else if(zoom.toInt() == 0){
+                                  zoom = 1;
+                                }else{
+                                  zoom =0;
+                                }
+
+                              print( zoom.toString());
+                              });
+                          },
                           child: QRView(
                               overlay: QrScannerOverlayShape(
-                                borderRadius: 10,
+                                cutOutSize:MediaQuery.of(context).size.width <450? (mq +zoom):250 ,
+                                borderRadius: 30,
                                 borderLength: 20,
-                                borderWidth: 10,
+                                borderWidth: 15,
+                                borderColor: Color(0xff04A583),
                               ),
                               onPermissionSet:  (ctrl, p) => _onPermissionSet(context, ctrl, p),
                               key: qrKey,
