@@ -137,7 +137,7 @@ class _ScanScreenState extends State<ScanScreen> {
                               setState(() {
 
                                 if(zoom <= 120 && zoom >= 0){
-                                  zoom = zoom -(d.rotation * 3) ;
+                                  zoom = zoom +(d.rotation * 3) ;
                                 }else if(zoom.toInt() == 120){
                                   zoom = 119;
                                 }else if(zoom.toInt() == 0){
