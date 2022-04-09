@@ -140,7 +140,7 @@ class SettingScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             alignment: Alignment.bottomRight,
-            child: const Text('v1.0.0+3', ),
+            child: const Text('v1.0.0+4'),
           ),
         ],
       ),

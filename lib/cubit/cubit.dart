@@ -11,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code/component.dart';
@@ -773,6 +774,23 @@ CameraPosition cameraPosition = CameraPosition(
       await  CacheHelper.putBoolean(key: 'playSound', value:openURLAuto);
       emit(ScanSwitchPlaySoundStates());
     }
+  }
+
+
+
+
+  Future<void> checkForUpdate()async {
+    AppUpdateInfo? _updateInfo;
+   await InAppUpdate.checkForUpdate().then((info)async{
+     _updateInfo =info;
+     emit(ScanCheckForUpdateStates());
+     if(_updateInfo?.updateAvailability == UpdateAvailability.updateAvailable ){
+     await  InAppUpdate.startFlexibleUpdate();
+     emit(ScanCheckForUpdateStates());
+     }
+
+    }).catchError(onError);
+    emit(ScanCheckForUpdateStates());
   }
 
 

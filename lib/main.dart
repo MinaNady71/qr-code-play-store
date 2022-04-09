@@ -19,6 +19,7 @@ void main() async{
  await CacheHelper.getBoolData('vibrate');
  await CacheHelper.getBoolData('openURL');
  await CacheHelper.getBoolData('playSound');
+ await CacheHelper.getDoubleData('zoom');
  BlocOverrides.runZoned(
        () {
          runApp(const MyApp());

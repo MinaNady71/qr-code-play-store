@@ -38,3 +38,5 @@ class ScanSwitchPlaySoundStates extends ScanCodeStates {}
 class ScanOpenURLAutomaticallyStates extends ScanCodeStates {}
 class ScanChooseLanguageStates extends ScanCodeStates {}
 
+class ScanCheckForUpdateStates extends ScanCodeStates {}
+

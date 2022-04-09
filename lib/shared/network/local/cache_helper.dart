@@ -17,5 +17,15 @@ static dynamic getBoolData(String key){
 return sharedPreferences.getBool(key);
 }
 
+  static Future<bool> putDouble({
+    required String key,
+    required double value
+  })async{
+    return await sharedPreferences.setDouble(key, value);
+  }
+
+  static dynamic getDoubleData(String key){
+    return sharedPreferences.getDouble(key);
+  }
 
 }

@@ -13,6 +13,7 @@ import 'package:qr_code/component.dart';
 import 'package:qr_code/cubit/cubit.dart';
 import 'package:qr_code/cubit/states.dart';
 import 'package:qr_code/screens/every_single_code_scannedHistory.dart';
+import 'package:qr_code/shared/network/local/cache_helper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,22 +30,26 @@ class _ScanScreenState extends State<ScanScreen> {
   Barcode? result;
   bool toggleFlash = false;
   IconData flashIcon = Icons.flash_off;
-  double zoom = 40;
+  double zoom =CacheHelper.getDoubleData('zoom')?? 40;
 @override
  
-  void reassemble() {
+  void reassemble() async{
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();
     } else if (Platform.isIOS) {
       controller!.resumeCamera();
     }
+    await ScanCodeCubit.get(context).checkForUpdate().then((value) {
+      print('update checked');
+    });
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
       AdsCubit.get(context).loadInterstitialAd();
+
   }
   @override
   void dispose() {
@@ -133,21 +138,30 @@ class _ScanScreenState extends State<ScanScreen> {
                               controller!.resumeCamera();
                             });
                           },
-                          onScaleUpdate: (d){
+
+                          onScaleUpdate: (scale){
                               setState(() {
 
                                 if(zoom <= 120 && zoom >= 0){
-                                  zoom = zoom +(d.rotation * 3) ;
-                                }else if(zoom.toInt() == 120){
+                                  if(scale.rotation.isNegative){
+                                    zoom -- ;
+                                  }else{
+                                    zoom ++ ;
+                                  }
+
+                                }else if(zoom.toInt() >= 120){
                                   zoom = 119;
-                                }else if(zoom.toInt() == 0){
+                                }else if(zoom.toInt() <= 0){
                                   zoom = 1;
-                                }else{
-                                  zoom =0;
                                 }
 
-                              print( zoom.toString());
+                              print(zoom.toString());
                               });
+                          },
+                          onScaleEnd: (end){
+                            setState(() {
+                              CacheHelper.putDouble(key: 'zoom', value: zoom);
+                            });
                           },
                           child: QRView(
                               overlay: QrScannerOverlayShape(
@@ -162,7 +176,6 @@ class _ScanScreenState extends State<ScanScreen> {
                               onQRViewCreated: _onQRViewCreated),
                         ),
                       ),
-
                     ],
                   ),
                 ],

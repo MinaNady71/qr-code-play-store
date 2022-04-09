@@ -24,7 +24,7 @@ static void randomIndexForInterstitialAd(){
 
 
 
-  static bool testMode = false;
+  static bool testMode = true;
 
  static List<String> interstitialAdUnitIdList =
  [
